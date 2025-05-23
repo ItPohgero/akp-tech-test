@@ -1,5 +1,4 @@
 export async function ContextData() {
-    return {}
+	return {};
 }
-export type Context = Awaited<ReturnType<typeof ContextData>>
-
+export type Context = Awaited<ReturnType<typeof ContextData>>;

@@ -1,8 +1,9 @@
+import path from "node:path";
 import { reactRouter } from "@react-router/dev/vite";
 import tailwindcss from "@tailwindcss/vite";
+import { reactRouterHonoServer } from "react-router-hono-server/dev";
 import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
-import { reactRouterHonoServer } from "react-router-hono-server/dev";
 
 export default defineConfig({
 	plugins: [
@@ -14,4 +15,9 @@ export default defineConfig({
 		reactRouter(),
 		tsconfigPaths(),
 	],
+	resolve: {
+		alias: {
+			"@": path.resolve(__dirname, "./app"),
+		},
+	},
 });
