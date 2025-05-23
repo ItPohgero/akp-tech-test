@@ -8,7 +8,7 @@ import {
 } from "react-router";
 
 import type { Route } from "./+types/root";
-import "./app.css";
+import "./web/styles/app.css";
 
 export const links: Route.LinksFunction = () => [
 	{ rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -25,14 +25,21 @@ export const links: Route.LinksFunction = () => [
 
 export function Layout({ children }: { children: React.ReactNode }) {
 	return (
-		<html lang="en">
+		<html lang="en" suppressHydrationWarning={true}>
 			<head>
 				<meta charSet="utf-8" />
 				<meta name="viewport" content="width=device-width, initial-scale=1" />
 				<Meta />
 				<Links />
+				{/* Add font display swap to prevent layout shift */}
+				<style>{`
+					body { 
+						font-family: Inter, system-ui, sans-serif; 
+						font-display: swap;
+					}
+				`}</style>
 			</head>
-			<body>
+			<body suppressHydrationWarning={true}>
 				{children}
 				<ScrollRestoration />
 				<Scripts />
