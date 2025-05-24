@@ -13,6 +13,13 @@ export const appRouter = router({
 			example: "Hello world",
 		};
 	}),
+	products: {
+		all: publicProcedure.query(({ ctx }) => {
+			console.log("Fetching all products");
+
+			return ctx.prisma.product.findMany();
+		}),
+	},
 });
 
 export type AppRouter = typeof appRouter;

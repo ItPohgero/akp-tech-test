@@ -1,8 +1,8 @@
+import { auth } from "@/lib/auth";
 import { trpcServer } from "@hono/trpc-server";
 import { Hono } from "hono";
 import { ContextData } from "../context/main";
 import { appRouter } from "../server-router";
-import { auth } from "@/lib/auth";
 
 export function HonoApp() {
 	const app = new Hono();

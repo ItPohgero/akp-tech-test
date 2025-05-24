@@ -77,8 +77,9 @@ export function DropdownMenu({
 		<div className="" onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
 			<motion.button
 				type="button"
-				className={`flex items-center space-x-1 text-left py-2 px-3 rounded-md transition-all duration-200 ${isOpen ? "bg-gray-100 text-orange-600" : "hover:bg-gray-50"
-					}`}
+				className={`flex items-center space-x-1 text-left py-2 px-3 rounded-md transition-all duration-200 ${
+					isOpen ? "bg-gray-100 text-orange-600" : "hover:bg-gray-50"
+				}`}
 				whileHover={{ scale: 1.02 }}
 				whileTap={{ scale: 0.98 }}
 			>
@@ -117,7 +118,9 @@ export function DropdownMenu({
 													{item.name}
 												</h2>
 											</div>
-											<p className="text-gray-600 text-sm">{item.description}</p>
+											<p className="text-gray-600 text-sm">
+												{item.description}
+											</p>
 										</motion.div>
 
 										<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6">
@@ -155,7 +158,9 @@ export function DropdownMenu({
 															</p>
 														</div>
 														<motion.button
-															onClick={() => navigate(footer?.viewAllLink || "")}
+															onClick={() =>
+																navigate(footer?.viewAllLink || "")
+															}
 															className="text-sm text-orange-600 hover:text-orange-700 font-medium"
 															whileHover={{ scale: 1.05, x: 5 }}
 															transition={{ duration: 0.2 }}

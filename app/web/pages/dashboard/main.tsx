@@ -5,7 +5,6 @@ import { useNavigate } from "react-router";
 export default function WelcomePage() {
 	const navigate = useNavigate();
 	const handleSignOut = async () => {
-		
 		// Sign out logic here
 		await authClient.signOut({
 			fetchOptions: {
@@ -14,7 +13,7 @@ export default function WelcomePage() {
 				},
 			},
 		});
-	}
+	};
 	return (
 		<div className="container mx-auto p-4">
 			<p>Dashboard</p>

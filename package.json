@@ -7,7 +7,8 @@
 		"dev": "bunx --bun vite",
 		"start": "bun ./build/server/index.js",
 		"typecheck": "react-router typegen && tsc",
-		"format": "bunx biome format --write . && bunx biome lint --write . && bunx biome check --write ."
+		"format": "bunx biome format --write . && bunx biome lint --write . && bunx biome check --write .",
+		"seed": "bun ./prisma/seed.ts"
 	},
 	"dependencies": {
 		"@hono/trpc-server": "^0.3.4",

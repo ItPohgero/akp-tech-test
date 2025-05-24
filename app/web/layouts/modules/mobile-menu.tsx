@@ -64,7 +64,10 @@ export function MobileMenu(props: MobileMenuProps) {
 
 					<div className="flex-1 overflow-y-auto min-h-0">
 						{[...Array(10)].map((_, index) => (
-							<div key={index?.toString()} className="p-4 border-b border-dashed">
+							<div
+								key={index?.toString()}
+								className="p-4 border-b border-dashed"
+							>
 								<h3 className="font-medium text-gray-900 mb-3">
 									{allCategories.title}
 								</h3>

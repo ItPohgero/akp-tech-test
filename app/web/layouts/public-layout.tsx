@@ -1,14 +1,34 @@
+import { authClient } from "@/lib/better-auth.client";
 import Logo from "@/web/components/common/logo";
-import { Button } from "@/web/components/ui/button";
-import { Input } from "@/web/components/ui/input";
 import type { MenuType } from "@/web/types/public-menu.type";
-import { Globe, Search, ShoppingCart, User } from "lucide-react";
-import { Outlet } from "react-router";
+import { Globe, ShoppingCart, User } from "lucide-react";
+import { Else, If, Then } from "react-if";
+import { Outlet, useNavigate } from "react-router";
 import { Fragment } from "react/jsx-runtime";
-import DesktopMenu from "./modules/dekstop-menu";
+import { Button } from "../components/ui/button";
+import { NAVIGATE } from "../web-routes";
+import type { Route } from "./+types/public-layout";
+import DesktopMenu, { SearchItem } from "./modules/dekstop-menu";
 import { MobileMenu } from "./modules/mobile-menu";
 
-export default function PublicLayout() {
+export async function clientLoader(): Promise<{
+	user:
+		| Awaited<ReturnType<typeof authClient.getSession>>["data"]["user"]
+		| null;
+}> {
+	try {
+		const session = await authClient.getSession();
+		return { user: session.data?.user || null };
+	} catch {
+		return { user: null };
+	}
+}
+
+export default function PublicLayout({ loaderData }: Route.ComponentProps) {
+	const navigate = useNavigate();
+	const { data: user } = authClient.useSession();
+	const currentUser = loaderData?.user || user;
+
 	const DataAllCategory: MenuType = {
 		title: "All categories",
 		data: [
@@ -52,55 +72,54 @@ export default function PublicLayout() {
 	};
 	return (
 		<Fragment>
-			<header className="bg-white shadow-sm border-b">
+			<header className="bg-white shadow-sm border-b sticky top-0 z-50">
 				<div className="container mx-auto px-4">
 					<div className="flex items-center justify-between py-4">
-						<div className="flex items-center space-x-8">
+						<div className="flex items-center">
 							<Logo />
 						</div>
-						<div className="flex-1 max-w-2xl mx-4 hidden md:block">
-							<div className="relative">
-								<Input
-									type="text"
-									placeholder="What yout loking for?"
-									className="w-full pl-4 pr-12 h-10 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-orange-500"
-								/>
-								<Button
-									type="button"
-									className="absolute right-1 top-1/2 -translate-y-1/2 h-8 px-6 bg-orange-500 text-white rounded-full hover:bg-orange-600"
-								>
-									<Search className="w-5 h-5" />
-									<span>Search</span>
-								</Button>
-							</div>
+						<div className="flex-1 max-w-3xl mx-4 hidden lg:block">
+							<SearchItem />
 						</div>
-
-						<div className="flex items-center justify-between py-2 text-sm">
-							<div className="hidden md:flex items-center space-x-4">
+						<div className="flex items-center justify-between py-2 text-sm space-x-4">
+							<div className="hidden lg:flex items-center space-x-4">
 								<div className="flex items-center space-x-1">
 									<Globe className="w-4 h-4" />
 									<span>English-USD</span>
 								</div>
 								<ShoppingCart className="w-4 h-4" />
-								<span>Sign in</span>
-								<button
-									type="button"
-									className="bg-orange-500 text-white px-4 py-1 rounded"
-								>
-									Create account
-								</button>
+								<If condition={!!currentUser}>
+									<Then>
+										<div className="hidden lg:flex items-center space-x-4">
+											<Button
+												onClick={() => navigate(NAVIGATE.DASHBOARD)}
+												variant="outline"
+											>
+												<User className="w-5 h-5" />
+												<span>{currentUser?.name}</span>
+											</Button>
+										</div>
+									</Then>
+									<Else>
+										<Button
+											onClick={() => navigate(NAVIGATE.AUTH)}
+											type="button"
+											className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-1"
+										>
+											Create account
+										</Button>
+									</Else>
+								</If>
 							</div>
-						</div>
-						<div className="flex items-center space-x-4">
-							<div className="hidden md:flex items-center space-x-4">
-								<User className="w-5 h-5" />
-							</div>
-							<div className="md:hidden p-2 hover:bg-gray-100 rounded">
+							<div className="lg:hidden hover:bg-gray-100 rounded">
 								<MobileMenu allCategories={DataAllCategory} />
 							</div>
 						</div>
 					</div>
 					<DesktopMenu allCategories={DataAllCategory} />
+				</div>
+				<div className="mb-2 container mx-auto px-4 lg:hidden">
+					<SearchItem />
 				</div>
 			</header>
 			<Outlet />
