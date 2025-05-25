@@ -1,0 +1,25 @@
+[providers]
+bun = "1.2.13"
+
+[variables]
+NODE_ENV = "production"
+
+[phases.setup]
+nixPkgs = ["curl", "ca-certificates"]
+
+[phases.install]
+cmds = [
+  "bun install --frozen-lockfile"
+]
+
+[phases.build]
+cmds = [
+  "bunx prisma generate",
+  "bun run build"
+]
+
+[phases.start]
+cmd = "bun run start"
+
+[staticAssets]
+"build/client" = "/"
