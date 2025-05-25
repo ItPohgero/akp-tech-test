@@ -31,6 +31,7 @@ dev:
 	bun run docker:dev
 
 dev-first:
+	cp env.example .env.development
 	@echo "First time setup - Starting containers..."
 	bun run docker:dev &
 	@echo "Waiting for containers to be ready..."
