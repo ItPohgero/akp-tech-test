@@ -20,9 +20,4 @@ export default defineConfig({
 			"@": path.resolve(__dirname, "./app"),
 		},
 	},
-	server: {
-		host: true,
-		port: 5173,
-		allowedHosts: ['akpstore.itpohgero.com', 'localhost', '127.0.0.1', '.itpohgero.com']
-	}
 });
