@@ -1,0 +1,28 @@
+services:
+  db:
+    image: postgres:16
+    restart: always
+    environment:
+      POSTGRES_USER: itpohgero
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: akpstore
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+  app:
+    build: .
+    restart: always
+    ports:
+      - "5173:5173"
+    env_file:
+      - .env.development
+    depends_on:
+      - db
+    volumes:
+      - .:/app
+      - /app/node_modules
+
+volumes:
+  db-data:

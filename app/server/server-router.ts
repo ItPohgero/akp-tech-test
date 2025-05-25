@@ -1,6 +1,7 @@
 import { initTRPC } from "@trpc/server";
 import type { Context } from "./context/main";
 import { HealthSchema } from "./schema/health.schema";
+import { ProductShowSchema } from "./schema/product_show.schema";
 
 const t = initTRPC.context<Context>().create();
 
@@ -18,6 +19,13 @@ export const appRouter = router({
 			console.log("Fetching all products");
 
 			return ctx.prisma.product.findMany();
+		}),
+		show: publicProcedure.input(ProductShowSchema).query(({ ctx, input }) => {
+			return ctx.prisma.product.findUnique({
+				where: {
+					slug: input.slug,
+				},
+			});
 		}),
 	},
 });

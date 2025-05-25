@@ -1,47 +1,15 @@
-# ========== BUILD STAGE ==========
-FROM oven/bun:1.1.13 AS builder
+FROM oven/bun:canary-slim
 
 WORKDIR /app
 
-# Copy package files
-COPY package.json bun.lock ./
+COPY package.json bun.lock tsconfig.json ./
+COPY prisma ./prisma
+COPY app ./app
 
-# Copy Prisma schema files
-# COPY prisma ./prisma/
+RUN bun install
 
-# Install all dependencies (including dev dependencies)
-RUN bun install --frozen-lockfile
+COPY .env.development .env
 
-# Copy all project files
-COPY . .
+EXPOSE 5173
 
-# Build the application
-RUN bun run build
-
-# Generate Prisma Client in the builder stage
-# RUN bunx prisma generate
-
-# ========== PRODUCTION STAGE ==========
-FROM oven/bun:1.1.13-slim
-
-WORKDIR /app
-
-# Copy package files
-COPY --from=builder /app/package.json /app/bun.lock ./
-
-# Copy Prisma schema and generated client
-# COPY --from=builder /app/prisma ./prisma
-# COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
-# COPY --from=builder /app/node_modules/@prisma ./node_modules/@prisma
-
-# Install only production dependencies
-RUN bun install --production
-
-# Copy built application
-COPY --from=builder /app/build ./build
-
-ENV NODE_ENV=production
-
-EXPOSE 3000
-
-CMD ["bun", "start"]
+CMD ["bun", "run", "dev"]

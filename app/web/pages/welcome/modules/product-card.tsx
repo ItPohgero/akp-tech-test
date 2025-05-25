@@ -1,7 +1,10 @@
+import { NAVIGATE } from "@/web/web-routes";
 import { Shield, Star } from "lucide-react";
 import { Fragment } from "react";
+import { NavLink } from "react-router";
 
 type Props = {
+	slug: string;
 	imageUrl: string;
 	name: string;
 	price: string;
@@ -25,7 +28,12 @@ export default function ProductCard(props: Props) {
 					</button>
 				</div>
 				<div className="p-4">
-					<h3 className="font-medium text-sm mb-2 line-clamp-2">{name}</h3>
+					<NavLink
+						to={NAVIGATE.PRODUCT_SHOW.replace(":slug", props.slug)}
+						className="block mb-3"
+					>
+						<h3 className="font-medium text-sm mb-2 line-clamp-2">{name}</h3>
+					</NavLink>
 					<p className="text-orange-500 font-semibold mb-2">{price}</p>
 					<div className="flex items-center justify-between text-xs text-gray-500">
 						<span>MOQ: 1 piece</span>

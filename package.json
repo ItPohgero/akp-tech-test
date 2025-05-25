@@ -3,12 +3,21 @@
 	"private": true,
 	"type": "module",
 	"scripts": {
-		"build": "react-router build",
-		"dev": "bunx --bun vite",
-		"start": "bun ./build/server/index.js",
+		"build": "bunx vite build",
+		"dev": "bunx --bun vite --host",
+		"start": "bunx prisma migrate deploy && bun ./build/server/index.js",
 		"typecheck": "react-router typegen && tsc",
 		"format": "bunx biome format --write . && bunx biome lint --write . && bunx biome check --write .",
-		"seed": "bun ./prisma/seed.ts"
+		"docker:up": "docker-compose up --build",
+		"docker:down": "docker-compose down",
+		"docker:logs": "docker-compose logs -f",
+		"docker:prisma:generate": "docker-compose exec app bunx prisma generate",
+		"docker:prisma:format": "docker-compose exec app bunx prisma format",
+		"docker:prisma:lint": "docker-compose exec app bunx prisma lint",
+		"docker:prisma:studio": "docker-compose exec app bunx prisma studio",
+		"docker:prisma:db:push": "docker-compose exec app bunx prisma db push",
+		"docker:prisma:db:reset": "docker-compose exec app bunx prisma db reset --force",
+		"docker:prisma:db:seed": "docker-compose exec app bun ./prisma/seed.ts"
 	},
 	"dependencies": {
 		"@hono/trpc-server": "^0.3.4",
@@ -25,6 +34,7 @@
 		"isbot": "^5.1.28",
 		"lucide-react": "^0.511.0",
 		"motion": "^12.12.2",
+		"nanoid": "^5.1.5",
 		"react": "^19.1.0",
 		"react-dom": "^19.1.0",
 		"react-if": "^4.1.5",

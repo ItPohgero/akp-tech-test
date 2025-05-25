@@ -85,6 +85,7 @@ export default function WelcomePage() {
 								data={products}
 								render={(product) => (
 									<ProductCard
+										slug={product.slug}
 										imageUrl={product.imageUrl || ""}
 										name={product.name}
 										price={product.price}

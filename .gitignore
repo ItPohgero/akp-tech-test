@@ -9,4 +9,6 @@ note.md
 /generated/prisma
 
 # Ignore all
-/.env*
+/.env
+
+Makefile

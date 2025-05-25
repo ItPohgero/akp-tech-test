@@ -22,9 +22,9 @@ export default function DesktopMenu(props: DesktopMenu) {
 	};
 	return (
 		<Fragment>
-			<nav className="hidden md:block pb-4 relative">
-				<div className="flex flex-col md:flex-row md:items-center md:justify-between">
-					<motion.div className="flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-2">
+			<nav className="hidden lg:block pb-4 relative">
+				<div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
+					<motion.div className="flex flex-col lg:flex-row lg:items-center space-y-2 lg:space-y-0 lg:space-x-2">
 						<DropdownMenu
 							title={allCategories.title}
 							data={allCategories.data}
@@ -35,7 +35,7 @@ export default function DesktopMenu(props: DesktopMenu) {
 						/>
 					</motion.div>
 
-					<div className="flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-2 mt-4 md:mt-0">
+					<div className="flex flex-col lg:flex-row lg:items-center space-y-2 lg:space-y-0 lg:space-x-2 mt-4 lg:mt-0">
 						<SimpleMenuItem href="/">Get the app</SimpleMenuItem>
 						<SimpleMenuItem href="/acc">Become a supplier</SimpleMenuItem>
 					</div>
@@ -59,7 +59,7 @@ export function SearchItem() {
 					className="absolute right-1 top-1/2 -translate-y-1/2 h-8 px-6 bg-orange-500 text-white rounded-full hover:bg-orange-600"
 				>
 					<Search className="w-5 h-5" />
-					<span className="hidden md:inline">Search</span>
+					<span className="hidden lg:inline">Search</span>
 				</Button>
 			</div>
 		</Fragment>
