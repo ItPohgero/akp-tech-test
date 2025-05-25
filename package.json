@@ -3,9 +3,10 @@
 	"private": true,
 	"type": "module",
 	"scripts": {
+		"postinstall": "bunx prisma generate",
 		"build": "react-router build",
 		"dev": "bunx --bun vite --host --port 5173",
-		"start": "bunx prisma generate && bun ./build/server/index.js",
+		"start": "bun ./build/server/index.js",
 		"typecheck": "react-router typegen && tsc",
 		"format": "bunx biome format --write . && bunx biome lint --write . && bunx biome check --write .",
 		"docker:dev": "docker-compose -f docker-compose.yml up --build",
