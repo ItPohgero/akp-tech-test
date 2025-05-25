@@ -6,3 +6,7 @@ healthcheckPath = "/"
 healthcheckTimeout = 100
 restartPolicyType = "ON_FAILURE"
 startCommand = "bun run start"
+
+[environments.production.variables]
+NODE_ENV = "production"
+NIXPACKS_NODE_VERSION = "false"
