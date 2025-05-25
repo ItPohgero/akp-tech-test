@@ -1,9 +1,9 @@
-# Nixpacks configuration for Railway deployment
-[providers]
-bun = "1.2.13"
+
+providers = ["bun"]
 
 [variables]
 NODE_ENV = "production"
+BUN_VERSION = "1.2.13"
 
 [phases.setup]
 nixPkgs = ["curl", "ca-certificates"]
