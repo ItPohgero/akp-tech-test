@@ -5,6 +5,4 @@ buildCommand = "bun run build"
 [deploy]
 preDeployCommand = ["bunx prisma generate"]
 startCommand = "bun run start"
-healthcheckPath = "/"
-healthcheckTimeout = 100
 restartPolicyType = "NEVER"
