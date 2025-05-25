@@ -23,6 +23,7 @@ services:
     restart: always
     ports:
       - "5173:5173"
+      - "5555:5555"
     env_file:
       - .env.development
     depends_on:

@@ -124,6 +124,7 @@ export default function WelcomePage() {
 										stockQuantity={product.stockQuantity || 0}
 									/>
 								)}
+								notFound={<div className="col-span-full text-center text-gray-500">No products found.</div>}
 							/>
 						</div>
 					</main>

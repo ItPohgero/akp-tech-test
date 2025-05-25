@@ -20,4 +20,9 @@ export default defineConfig({
 			"@": path.resolve(__dirname, "./app"),
 		},
 	},
+	server: {
+		hmr: {
+			overlay: false
+		}
+	}
 });
