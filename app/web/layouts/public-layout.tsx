@@ -4,11 +4,12 @@ import type { MenuType } from "@/web/types/public-menu.type";
 import { Globe, ShoppingCart, User } from "lucide-react";
 import { Else, If, Then } from "react-if";
 import { Outlet, useNavigate } from "react-router";
-import { Fragment } from "react/jsx-runtime";
 import { Button } from "../components/ui/button";
+import { PublicLayoutProvider } from "../context/public-layout.context";
 import { NAVIGATE } from "../web-routes";
 import type { Route } from "./+types/public-layout";
 import DesktopMenu, { SearchItem } from "./modules/dekstop-menu";
+import Footer from "./modules/footer";
 import { MobileMenu } from "./modules/mobile-menu";
 
 export async function clientLoader(): Promise<{
@@ -71,8 +72,8 @@ export default function PublicLayout({ loaderData }: Route.ComponentProps) {
 		},
 	};
 	return (
-		<Fragment>
-			<header className="bg-white shadow-sm border-b sticky top-0 z-50">
+		<PublicLayoutProvider defaultFilterValue={false} defaultMenuValue={false}>
+			<header className="bg-white border-b sticky top-0 z-50">
 				<div className="container mx-auto px-4">
 					<div className="flex items-center justify-between py-4">
 						<div className="flex items-center">
@@ -123,6 +124,7 @@ export default function PublicLayout({ loaderData }: Route.ComponentProps) {
 				</div>
 			</header>
 			<Outlet />
-		</Fragment>
+			<Footer />
+		</PublicLayoutProvider>
 	);
 }

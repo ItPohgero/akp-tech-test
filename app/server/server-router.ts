@@ -1,7 +1,7 @@
 import { initTRPC } from "@trpc/server";
 import type { Context } from "./context/main";
-import { HealthSchema } from "./schema/health.schema";
 import { ProductsControllers } from "./controllers/products.controllers";
+import { HealthSchema } from "./schema/health.schema";
 
 const t = initTRPC.context<Context>().create();
 const publicProcedure = t.procedure;

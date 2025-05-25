@@ -2,9 +2,10 @@ import { Button } from "@/web/components/ui/button";
 import { Input } from "@/web/components/ui/input";
 import { DropdownMenu } from "@/web/components/ui/menu-dropdown";
 import { SimpleMenuItem } from "@/web/components/ui/menu-simple";
+import { usePublicLayout } from "@/web/context/public-layout.context";
 import type { MenuType } from "@/web/types/public-menu.type";
 import { motion } from "framer-motion";
-import { Search, X } from "lucide-react";
+import { Filter, Search, X } from "lucide-react";
 import { Fragment, useEffect, useState } from "react";
 import { useSearchParams } from "react-router";
 
@@ -47,6 +48,7 @@ export default function DesktopMenu(props: DesktopMenu) {
 }
 
 export function SearchItem() {
+	const { toggleFilter } = usePublicLayout();
 	const [searchParams, setSearchParams] = useSearchParams();
 	const [searchQuery, setSearchQuery] = useState<string>("");
 	const [isSearching, setIsSearching] = useState<boolean>(false);
@@ -94,38 +96,52 @@ export function SearchItem() {
 
 	return (
 		<Fragment>
-			<div className="relative">
-				<Input
-					value={searchQuery}
-					onChange={handleInputChange}
-					onKeyUp={handleKeyPress}
-					type="text"
-					placeholder="What are you looking for?"
-					className="w-full pl-4 pr-24 h-10 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-orange-500"
-					disabled={isSearching}
-				/>
-				{showClearButton && (
-					<Button
-						onClick={handleClearSearch}
-						type="button"
-						variant="ghost"
-						size="sm"
-						className="absolute right-28 top-1/2 -translate-y-1/2 h-6 w-6 p-0 hover:bg-gray-100 rounded-full"
-						title="Clear search"
-					>
-						<X className="w-4 h-4 text-gray-400" />
-					</Button>
-				)}
+			<div className="flex items-center justify-between gap-x-4">
+				<div className="relative w-full">
+					<Input
+						value={searchQuery}
+						onChange={handleInputChange}
+						onKeyUp={handleKeyPress}
+						type="text"
+						placeholder="What are you looking for?"
+						className="w-full pl-4 pr-24 h-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+						disabled={isSearching}
+					/>
+					<div className="absolute right-1 top-1/2 -translate-y-1/2 ">
+						<div className="flex items-center space-x-2">
+							{showClearButton && (
+								<Button
+									onClick={handleClearSearch}
+									type="button"
+									variant="ghost"
+									size="sm"
+									className="h-6 w-6 p-0 hover:bg-gray-100 rounded-lg"
+									title="Clear search"
+								>
+									<X className="w-4 h-4 text-gray-400" />
+								</Button>
+							)}
+							<Button
+								onClick={handleSearch}
+								type="button"
+								disabled={isSearching}
+								className="h-8 px-4 bg-orange-500 text-white rounded-lg hover:bg-orange-600 disabled:opacity-50 disabled:cursor-not-allowed"
+							>
+								<Search className="w-4 h-4" />
+								<span className="hidden lg:inline ml-1">
+									{isSearching ? "..." : "Search"}
+								</span>
+							</Button>
+						</div>
+					</div>
+				</div>
 				<Button
-					onClick={handleSearch}
+					variant="outline"
 					type="button"
-					disabled={isSearching}
-					className="absolute right-1 top-1/2 -translate-y-1/2 h-8 px-4 bg-orange-500 text-white rounded-full hover:bg-orange-600 disabled:opacity-50 disabled:cursor-not-allowed"
+					className="w-max"
+					onClick={toggleFilter}
 				>
-					<Search className="w-4 h-4" />
-					<span className="hidden lg:inline ml-1">
-						{isSearching ? "..." : "Search"}
-					</span>
+					<Filter />
 				</Button>
 			</div>
 		</Fragment>

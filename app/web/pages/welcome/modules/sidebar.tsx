@@ -1,4 +1,5 @@
 import { Button } from "@/web/components/ui/button";
+import { Card, CardContent } from "@/web/components/ui/card";
 import {
 	Drawer,
 	DrawerClose,
@@ -7,31 +8,24 @@ import {
 	DrawerFooter,
 	DrawerHeader,
 	DrawerTitle,
-	DrawerTrigger,
 } from "@/web/components/ui/drawer";
-import { Filter, X } from "lucide-react";
-import { Fragment, useState } from "react";
+import { usePublicLayout } from "@/web/context/public-layout.context";
+import { X } from "lucide-react";
+import { Fragment } from "react";
 import FilterContent from "./filter-content";
 
 export default function Sidebar() {
-	const [isOpen, setIsOpen] = useState(false);
+	const { filter, toggleFilter } = usePublicLayout();
 	return (
 		<Fragment>
-			<div className="hidden lg:block bg-white p-4 rounded-lg shadow-sm">
-				<h3 className="font-semibold text-lg mb-4">Filters</h3>
-				<FilterContent />
-			</div>
+			<Card className="hidden lg:block">
+				<CardContent>
+					<h3 className="font-semibold text-lg mb-4">Filters</h3>
+					<FilterContent />
+				</CardContent>
+			</Card>
 			<div className="lg:hidden">
-				<Drawer open={isOpen} onOpenChange={setIsOpen}>
-					<DrawerTrigger asChild>
-						<Button
-							variant="outline"
-							className="w-full mb-4 flex items-center justify-center space-x-2"
-						>
-							<Filter className="w-4 h-4" />
-							<span>Filters</span>
-						</Button>
-					</DrawerTrigger>
+				<Drawer open={filter} onOpenChange={toggleFilter}>
 					<DrawerContent className="max-h-[80vh]">
 						<DrawerHeader className="text-left">
 							<DrawerTitle className="flex items-center justify-between">

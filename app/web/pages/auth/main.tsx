@@ -1,15 +1,15 @@
 import { authClient } from "@/lib/better-auth.client";
 import Logo from "@/web/components/common/logo";
-import { Button } from "@/web/components/ui/button"
+import { Button } from "@/web/components/ui/button";
 import {
 	Card,
 	CardContent,
 	CardDescription,
 	CardHeader,
 	CardTitle,
-} from "@/web/components/ui/card"
-import { Input } from "@/web/components/ui/input"
-import { Label } from "@/web/components/ui/label"
+} from "@/web/components/ui/card";
+import { Input } from "@/web/components/ui/input";
+import { Label } from "@/web/components/ui/label";
 import { cn } from "@/web/lib/utils";
 import { NAVIGATE } from "@/web/web-routes";
 import { useState } from "react";
@@ -33,9 +33,9 @@ export default function AuthPage() {
 
 	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = e.target;
-		setFormData(prev => ({
+		setFormData((prev) => ({
 			...prev,
-			[name]: value
+			[name]: value,
 		}));
 	};
 
@@ -85,7 +85,7 @@ export default function AuthPage() {
 				onError: (ctx) => {
 					alert(ctx.error.message);
 				},
-			}
+			},
 		);
 	};
 
@@ -121,7 +121,7 @@ export default function AuthPage() {
 				onError: (ctx) => {
 					alert(ctx.error.message);
 				},
-			}
+			},
 		);
 	};
 	return (
@@ -176,7 +176,7 @@ export default function AuthPage() {
 													disabled={!formData.email}
 													className={cn(
 														"ml-auto text-sm underline-offset-4 hover:underline",
-														!formData.email && "cursor-not-allowed opacity-50"
+														!formData.email && "cursor-not-allowed opacity-50",
 													)}
 												>
 													Forgot your password?
@@ -227,8 +227,9 @@ export default function AuthPage() {
 					</CardContent>
 				</Card>
 				<div className="text-muted-foreground *:[a]:hover:text-primary text-center text-xs text-balance *:[a]:underline *:[a]:underline-offset-4">
-					By clicking continue, you agree to our <NavLink to="/">Terms of Service</NavLink>{" "}
-					and <NavLink to="/">Privacy Policy</NavLink>.
+					By clicking continue, you agree to our{" "}
+					<NavLink to="/">Terms of Service</NavLink> and{" "}
+					<NavLink to="/">Privacy Policy</NavLink>.
 				</div>
 			</div>
 		</div>

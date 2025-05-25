@@ -2,7 +2,7 @@ import { Skeleton } from "@/web/components/ui/skeleton";
 
 export function FiltersSkeleton() {
 	return (
-		<div className="bg-white p-4 rounded-lg shadow-sm space-y-6">
+		<div className="bg-white border p-4 rounded-lg shadow-sm space-y-6">
 			<Skeleton className="h-6 w-16" />
 
 			<div className="space-y-2">

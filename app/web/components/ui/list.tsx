@@ -102,7 +102,7 @@ const List = <TypeData,>({
 	pagination = false,
 	currentPage = 1,
 	totalPages = 1,
-	onPageChange = () => { },
+	onPageChange = () => {},
 }: ListProps<TypeData>) => {
 	const validData = Array.isArray(data) ? data : [];
 
@@ -177,6 +177,5 @@ const List = <TypeData,>({
 		</React.Fragment>
 	);
 };
-
 
 export default List;

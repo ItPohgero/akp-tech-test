@@ -35,7 +35,7 @@ export default function ProductCard(props: Props) {
 					>
 						<h3 className="font-medium text-sm mb-2 line-clamp-2">{name}</h3>
 					</NavLink>
-					<p className="text-orange-500 font-semibold mb-2">{price}</p>
+					<p className="text-orange-500 font-semibold mb-2">$ {price}</p>
 					<div className="flex items-center justify-between text-xs text-gray-500">
 						<span>Stock: {stockQuantity}</span>
 						<div className="flex items-center space-x-1">

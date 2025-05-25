@@ -13,8 +13,8 @@ const IMG = [
 	"https://s.alicdn.com/@sc04/kf/H86552df87b894cfc997a56603f5f0e39j.jpg_720x720q50.jpg",
 	"https://s.alicdn.com/@sc04/kf/Hb5483f5d55b1493a8cf81dbdb5bf7f14Y.jpg_720x720q50.jpg",
 	"https://s.alicdn.com/@sc04/kf/H4deb5bb71df34ae1ad6c9e91016e8d27x.jpg_720x720q50.jpg",
-	"https://s.alicdn.com/@sc04/kf/H70ac05f8be52450994216c972e8c3ec0C.jpg_720x720q50.jpg"
-]
+	"https://s.alicdn.com/@sc04/kf/H70ac05f8be52450994216c972e8c3ec0C.jpg_720x720q50.jpg",
+];
 
 const productsData = [
 	{
