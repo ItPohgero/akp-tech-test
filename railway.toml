@@ -1,12 +1,16 @@
 [build]
 builder = "NIXPACKS"
+buildCommand = "bun run build"
 
 [deploy]
+preDeployCommand = ["bunx prisma generate"]
+startCommand = "bun run start"
 healthcheckPath = "/"
 healthcheckTimeout = 100
-restartPolicyType = "ON_FAILURE"
-startCommand = "bun run start"
+restartPolicyType = "never"
 
-[environments.production.variables]
-NODE_ENV = "production"
-NIXPACKS_NODE_VERSION = "false"
+
+
+
+
+--
