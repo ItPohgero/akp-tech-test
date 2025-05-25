@@ -54,8 +54,8 @@ const Footer = () => {
 		"/pegadaian.svg",
 		"/permatabank.svg",
 		"/qris.svg",
-		"/shopee.svg",
-		"/tokopedia.svg",
+		"/on-shopee.svg",
+		"/on-tokopedia.svg",
 		"/visa.svg",
 	];
 
