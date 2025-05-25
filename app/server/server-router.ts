@@ -1,10 +1,9 @@
 import { initTRPC } from "@trpc/server";
 import type { Context } from "./context/main";
 import { HealthSchema } from "./schema/health.schema";
-import { ProductShowSchema } from "./schema/product_show.schema";
+import { ProductsControllers } from "./controllers/products.controllers";
 
 const t = initTRPC.context<Context>().create();
-
 const publicProcedure = t.procedure;
 const router = t.router;
 
@@ -14,20 +13,7 @@ export const appRouter = router({
 			example: "Hello world",
 		};
 	}),
-	products: {
-		all: publicProcedure.query(({ ctx }) => {
-			console.log("Fetching all products");
-
-			return ctx.prisma.product.findMany();
-		}),
-		show: publicProcedure.input(ProductShowSchema).query(({ ctx, input }) => {
-			return ctx.prisma.product.findUnique({
-				where: {
-					slug: input.slug,
-				},
-			});
-		}),
-	},
+	products: ProductsControllers,
 });
 
 export type AppRouter = typeof appRouter;

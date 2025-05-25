@@ -9,63 +9,12 @@ import {
 	DrawerTitle,
 	DrawerTrigger,
 } from "@/web/components/ui/drawer";
-import { Filter, Shield, X } from "lucide-react";
+import { Filter, X } from "lucide-react";
 import { Fragment, useState } from "react";
-
-function FilterContent() {
-	return (
-		<div className="space-y-6">
-			<div className="mb-6">
-				<div className="flex items-center space-x-2 mb-2">
-					<Shield className="w-4 h-4 text-yellow-500" />
-					<span className="font-medium">Trade Assurance</span>
-				</div>
-				<p className="text-sm text-gray-600">
-					Protects your orders on akpstore.itpohgero.com
-				</p>
-			</div>
-			<div className="mb-6">
-				<h4 className="font-medium mb-3">Supplier features</h4>
-				<div className="flex items-center space-x-2">
-					<Shield className="w-4 h-4 text-blue-500" />
-					<span className="text-sm">Verified Supplier</span>
-				</div>
-			</div>
-			<div className="mb-6">
-				<h4 className="font-medium mb-3">Delivery by</h4>
-				<p className="text-xs text-gray-500 mb-3">
-					Unit price is subject to expected delivery date
-				</p>
-				<div className="space-y-2">
-					<div>Delivery by Jun 10</div>
-					<div>Delivery by Jun 16</div>
-					<div>Delivery by Jun 22</div>
-				</div>
-			</div>
-			<div className="mb-6">
-				<h4 className="font-medium mb-3">Store reviews</h4>
-				<p className="text-xs text-gray-500 mb-3">
-					Based on a 5-star rating system
-				</p>
-				<div className="space-y-1">
-					<div className="flex items-center space-x-2">
-						<span>4.0 & up</span>
-					</div>
-					<div className="flex items-center space-x-2">
-						<span>4.5 & up</span>
-					</div>
-					<div className="flex items-center space-x-2">
-						<span>5.0</span>
-					</div>
-				</div>
-			</div>
-		</div>
-	);
-}
+import FilterContent from "./filter-content";
 
 export default function Sidebar() {
 	const [isOpen, setIsOpen] = useState(false);
-
 	return (
 		<Fragment>
 			<div className="hidden lg:block bg-white p-4 rounded-lg shadow-sm">

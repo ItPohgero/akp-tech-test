@@ -1,6 +1,4 @@
 import trpc from "@/server/pkg/trpc-client";
-import List from "@/web/components/ui/list";
-import { Skeleton } from "@/web/components/ui/skeleton";
 import { User, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Else, If, Then } from "react-if";
@@ -9,11 +7,13 @@ import Sidebar from "./modules/sidebar";
 import { FiltersSkeleton } from "./modules/skeleton-filters";
 import { ProductCardSkeleton } from "./modules/skeleton-product-card";
 import { WelcomeBannerSkeleton } from "./modules/skeleton-welcome-banner";
+import { useSearchParams } from "react-router";
+import List from "@/web/components/ui/list";
 
 export default function WelcomePage() {
-	const [products, setProducts] = useState<
-		Awaited<ReturnType<typeof trpc.products.all.query>> | []
-	>([]);
+	const [search, setSearch] = useSearchParams();
+
+	const [data, setData] = useState<Awaited<ReturnType<typeof trpc.products.all.query>>>();
 	const [loading, setLoading] = useState<boolean>(true);
 	const [error, setError] = useState<Error | null>(null);
 
@@ -21,8 +21,17 @@ export default function WelcomePage() {
 		const fetchProducts = async () => {
 			try {
 				setLoading(true);
-				const result = await trpc.products.all.query();
-				setProducts(result);
+				const result = await trpc.products.all.query({
+					search: search.get("q") || "",
+					limit: 12,
+					page: Number.parseInt(search.get("page") || "1"),
+					sortBy: "createdAt",
+					sortOrder: "desc",
+					...(search.get("inStock") && { inStock: search.get("inStock") === "true" }),
+					...(search.get("minPrice") && { minPrice: Number.parseInt(search.get("minPrice") || "0") }),
+					...(search.get("maxPrice") && { maxPrice: Number.parseInt(search.get("maxPrice") || "0") }),
+				});
+				setData(result);
 			} catch (err) {
 				setError(err as Error);
 				console.error("Failed to fetch products:", err);
@@ -32,8 +41,15 @@ export default function WelcomePage() {
 		};
 
 		fetchProducts();
-	}, []);
+	}, [search]);
 
+	const handlePageChange = (newPage: number) => {
+		setSearch({ page: newPage.toString() });
+		window.scrollTo({
+			top: 0,
+			behavior: "smooth",
+		});
+	};
 	if (error) return <div>Error: {error.message}</div>;
 
 	return (
@@ -76,14 +92,17 @@ export default function WelcomePage() {
 							</Else>
 						</If>
 
-						{/* Products Grid */}
 						<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
 							<List
 								loading={loading}
 								skeleton={12}
 								renderSkeleton={ProductCardSkeleton}
-								data={products}
-								render={(product) => (
+								data={data?.data || []}
+								pagination={true}
+								totalPages={data?.pagination.totalPages || 1}
+								currentPage={data?.pagination.currentPage || 1}
+								onPageChange={handlePageChange}
+								render={(product: Awaited<ReturnType<typeof trpc.products.all.query>>['data'][number]) => (
 									<ProductCard
 										slug={product.slug}
 										imageUrl={product.imageUrl || ""}
@@ -93,25 +112,6 @@ export default function WelcomePage() {
 								)}
 							/>
 						</div>
-
-						{/* Load More Button */}
-						<If condition={loading}>
-							<Then>
-								<div className="text-center mt-8">
-									<Skeleton className="h-12 w-40 mx-auto rounded-lg" />
-								</div>
-							</Then>
-							<Else>
-								<div className="text-center mt-8">
-									<button
-										type="button"
-										className="px-8 py-3 border border-gray-300 rounded-lg hover:bg-gray-50"
-									>
-										Load more products
-									</button>
-								</div>
-							</Else>
-						</If>
 					</main>
 				</div>
 			</div>
