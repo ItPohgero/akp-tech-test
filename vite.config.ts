@@ -23,6 +23,6 @@ export default defineConfig({
 	server: {
 		host: true,
 		port: 5173,
-		allowedHosts: ['akpstore.itpohgero.com', 'localhost', '127.0.0.1']
+		allowedHosts: ['akpstore.itpohgero.com', 'localhost', '127.0.0.1', '.itpohgero.com']
 	}
 });
