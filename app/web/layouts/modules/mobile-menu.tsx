@@ -15,6 +15,7 @@ import {
 	DrawerTrigger,
 } from "@/web/components/ui/drawer";
 import List from "@/web/components/ui/list";
+import { usePublicLayout } from "@/web/context/public-layout.context";
 import type { MenuType } from "@/web/types/public-menu.type";
 import { NavLink } from "react-router";
 
@@ -24,9 +25,9 @@ type MobileMenuProps = {
 
 export function MobileMenu(props: MobileMenuProps) {
 	const { allCategories } = props;
-
+	const { menu, toggleMenu } = usePublicLayout();
 	return (
-		<Drawer direction="right">
+		<Drawer direction="right" open={menu} onOpenChange={toggleMenu}>
 			<DrawerTrigger asChild>
 				<Button variant="outline">
 					<Menu />

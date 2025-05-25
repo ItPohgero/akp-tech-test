@@ -96,7 +96,7 @@ export function SearchItem() {
 
 	return (
 		<Fragment>
-			<div className="flex items-center justify-between gap-x-4">
+			<div className="flex items-center justify-between gap-x-2">
 				<div className="relative w-full">
 					<Input
 						value={searchQuery}
@@ -104,7 +104,7 @@ export function SearchItem() {
 						onKeyUp={handleKeyPress}
 						type="text"
 						placeholder="What are you looking for?"
-						className="w-full pl-4 pr-24 h-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+						className="w-full px-4 placeholder:text-xs lg:placeholder:text-base h-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
 						disabled={isSearching}
 					/>
 					<div className="absolute right-1 top-1/2 -translate-y-1/2 ">

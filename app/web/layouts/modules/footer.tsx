@@ -43,7 +43,6 @@ const Footer = () => {
 		"/briva.svg",
 		"/cimbva.svg",
 		"/gopay.svg",
-		"/hendrasurya.svg",
 		"/indomaret.svg",
 		"/kantorpos.svg",
 		"/mandiriva.svg",
@@ -137,7 +136,7 @@ const Footer = () => {
 							<p className="text-sm text-gray-400">
 								&copy; 2025 AKPStore. All rights reserved.
 							</p>
-							<div className="flex flex-wrap items-center gap-4 text-sm text-gray-400">
+							<div className="flex flex-wrap items-center justify-center gap-4 text-sm text-gray-400">
 								<a href="/" className="hover:text-orange-500 transition-colors">
 									Privacy Policy
 								</a>
