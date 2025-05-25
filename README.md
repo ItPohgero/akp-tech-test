@@ -11,15 +11,20 @@ Pastikan Anda sudah menginstall:
 
 ##  Langkah Demi Langkah Setup
 
-### 1. Clone dan Navigate ke Project
+### Clone dan Navigate ke Project
 ```bash
 git clone https://github.com/ItPohgero/akp-tech-test
 cd akp-tech-test
 ```
 
-## Cara Cepat Rekomendasi
+### Cara Cepat Rekomendasi
 Jalankan di terminal: `make dev-first`
 Ini akan menjalankan semua langkah setup di bawah ini secara otomatis.
+
+### 1. Copy `env.example` ke `.env.development`
+```bash
+cp env.example .env.development
+```
 
 ### 2. Jalankan Docker Containers
 ```bash
