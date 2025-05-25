@@ -1,2 +1,2 @@
 [phases.setup]
-nixPkgs = ["openssl_3"]
+nixPkgs = ["bun", "openssl_3"]
