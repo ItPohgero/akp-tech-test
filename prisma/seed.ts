@@ -360,30 +360,29 @@ async function main() {
 		// Display summary
 		const totalProducts = await prisma.product.count();
 		console.log(`📊 Total products in database: ${totalProducts}`);
-		
+
 		// Display summary by brand
 		const productsByBrand = await prisma.product.groupBy({
-			by: ['sku'],
+			by: ["sku"],
 			_count: true,
 		});
-		
+
 		const brandCounts = {
 			iPhone: 0,
 			Samsung: 0,
-			'Google Pixel': 0
+			"Google Pixel": 0,
 		};
-		
+
 		for (const item of productsByBrand) {
-			if (item.sku.startsWith('IPH')) brandCounts.iPhone++;
-			else if (item.sku.startsWith('SAM')) brandCounts.Samsung++;
-			else if (item.sku.startsWith('GPX')) brandCounts['Google Pixel']++;
+			if (item.sku.startsWith("IPH")) brandCounts.iPhone++;
+			else if (item.sku.startsWith("SAM")) brandCounts.Samsung++;
+			else if (item.sku.startsWith("GPX")) brandCounts["Google Pixel"]++;
 		}
-		
+
 		console.log("📊 Products by brand:");
 		console.log(`   📱 iPhone: ${brandCounts.iPhone} products`);
 		console.log(`   📱 Samsung: ${brandCounts.Samsung} products`);
-		console.log(`   📱 Google Pixel: ${brandCounts['Google Pixel']} products`);
-		
+		console.log(`   📱 Google Pixel: ${brandCounts["Google Pixel"]} products`);
 	} catch (error) {
 		console.error("❌ Error during seeding:", error);
 		throw error;
