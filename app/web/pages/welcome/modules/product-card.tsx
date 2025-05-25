@@ -8,9 +8,10 @@ type Props = {
 	imageUrl: string;
 	name: string;
 	price: string;
+	stockQuantity: number;
 };
 export default function ProductCard(props: Props) {
-	const { imageUrl, name, price } = props;
+	const { imageUrl, name, price, stockQuantity } = props;
 	return (
 		<Fragment>
 			<div className="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow">
@@ -36,7 +37,7 @@ export default function ProductCard(props: Props) {
 					</NavLink>
 					<p className="text-orange-500 font-semibold mb-2">{price}</p>
 					<div className="flex items-center justify-between text-xs text-gray-500">
-						<span>MOQ: 1 piece</span>
+						<span>Stock: {stockQuantity}</span>
 						<div className="flex items-center space-x-1">
 							<Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
 							<span>4.5</span>

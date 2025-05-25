@@ -14,7 +14,16 @@ export const ProductsControllers = router({
         .input(ProductsListSchema)
         .query(async ({ ctx, input }) => {
             const { limit, page, sortBy, sortOrder, inStock, maxPrice, minPrice, search } = input;
-
+            console.log({
+                limit,
+                page,
+                sortBy,
+                sortOrder,
+                inStock,
+                maxPrice,
+                minPrice,
+                search
+            })
             const skip = (page - 1) * limit;
             const where: Prisma.ProductWhereInput = {};
 

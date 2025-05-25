@@ -9,6 +9,7 @@ import { ProductCardSkeleton } from "./modules/skeleton-product-card";
 import { WelcomeBannerSkeleton } from "./modules/skeleton-welcome-banner";
 import { useSearchParams } from "react-router";
 import List from "@/web/components/ui/list";
+import type { SortField } from "@/server/schema/product_list.schema";
 
 export default function WelcomePage() {
 	const [search, setSearch] = useSearchParams();
@@ -19,14 +20,26 @@ export default function WelcomePage() {
 
 	useEffect(() => {
 		const fetchProducts = async () => {
+			const sortBy = (value: string): SortField => {
+				switch (value) {
+					case "name":
+						return "name";
+					case "price":
+						return "price";
+					case "stockQuantity":
+						return "stockQuantity";
+					default:
+						return "createdAt";
+				}
+			}
 			try {
 				setLoading(true);
 				const result = await trpc.products.all.query({
 					search: search.get("q") || "",
 					limit: 12,
 					page: Number.parseInt(search.get("page") || "1"),
-					sortBy: "createdAt",
-					sortOrder: "desc",
+					...(search.get("sortBy") && { sortBy: sortBy(search.get("sortBy") || "") }),
+					...(search.get("sortOrder") && { sortOrder: search.get("sortOrder") === 'asc' ? 'asc' : 'desc' }),
 					...(search.get("inStock") && { inStock: search.get("inStock") === "true" }),
 					...(search.get("minPrice") && { minPrice: Number.parseInt(search.get("minPrice") || "0") }),
 					...(search.get("maxPrice") && { maxPrice: Number.parseInt(search.get("maxPrice") || "0") }),
@@ -108,6 +121,7 @@ export default function WelcomePage() {
 										imageUrl={product.imageUrl || ""}
 										name={product.name}
 										price={product.price}
+										stockQuantity={product.stockQuantity || 0}
 									/>
 								)}
 							/>
