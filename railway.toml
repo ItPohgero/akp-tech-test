@@ -1,8 +1,0 @@
-[build]
-builder = "NIXPACKS"
-buildCommand = "bun run build"
-
-[deploy]
-preDeployCommand = ["bunx prisma generate"]
-startCommand = "bun run start"
-restartPolicyType = "NEVER"
