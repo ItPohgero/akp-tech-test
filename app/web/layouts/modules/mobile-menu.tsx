@@ -19,7 +19,9 @@ import List from "@/web/components/ui/list";
 import { usePublicLayout } from "@/web/context/public-layout.context";
 import type { MenuType } from "@/web/types/public-menu.type";
 import { NAVIGATE } from "@/web/web-routes";
-import { useNavigate } from "react-router";
+import { NavLink, useNavigate } from "react-router";
+import { authClient } from "@/lib/better-auth.client";
+import { Else, If, Then } from "react-if";
 
 type MobileMenuProps = {
 	allCategories: MenuType;
@@ -30,6 +32,7 @@ export function MobileMenu(props: MobileMenuProps) {
 	const { allCategories, allPopularProduct } = props;
 	const { menu, toggleMenu } = usePublicLayout();
 	const navigate = useNavigate();
+	const { data: user } = authClient.useSession();
 
 	return (
 		<Drawer direction="right" open={menu} onOpenChange={toggleMenu}>
@@ -40,7 +43,6 @@ export function MobileMenu(props: MobileMenuProps) {
 			</DrawerTrigger>
 			<DrawerContent className="h-full max-h-screen w-full max-w-sm">
 				<div className="flex flex-col h-full max-h-screen bg-white">
-					{/* Header Section */}
 					<div className="flex-shrink-0 p-6 bg-gradient-to-r from-orange-500 to-orange-600 text-white">
 						<div className="flex items-center space-x-4 mb-4">
 							<div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
@@ -49,35 +51,46 @@ export function MobileMenu(props: MobileMenuProps) {
 							<div>
 								<div className="font-semibold text-lg">Welcome!</div>
 								<div className="text-orange-100 text-sm">
-									Sign in to get personalized deals
+									{user ? "You are signed in" : "Sign in to get personalized deals"}
 								</div>
 							</div>
 						</div>
-						<div className="flex space-x-3">
-							<Button
-								onClick={() => {
-									toggleMenu();
-									navigate(NAVIGATE.AUTH);
-								}}
-								className="flex-1 bg-white text-orange-600 hover:bg-orange-50 font-medium"
-							>
-								Sign In
-							</Button>
-							<Button
-								onClick={() => {
-									toggleMenu();
-									navigate(NAVIGATE.AUTH);
-								}}
-								className="flex-1 bg-white text-orange-600 hover:bg-orange-50 font-medium"
-							>
-								Register
-							</Button>
-						</div>
+						<If condition={!!user}>
+							<Then>
+								<NavLink
+									to={NAVIGATE.DASHBOARD}
+								>
+									<div className="text-sm text-white">
+										Hello, {user?.user.name || user?.user.email}!
+									</div>
+								</NavLink>
+							</Then>
+							<Else>
+								<div className="flex space-x-3">
+									<Button
+										onClick={() => {
+											toggleMenu();
+											navigate(NAVIGATE.AUTH);
+										}}
+										className="flex-1 bg-white text-orange-600 hover:bg-orange-50 font-medium"
+									>
+										Sign In
+									</Button>
+									<Button
+										onClick={() => {
+											toggleMenu();
+											navigate(NAVIGATE.AUTH);
+										}}
+										className="flex-1 bg-white text-orange-600 hover:bg-orange-50 font-medium"
+									>
+										Register
+									</Button>
+								</div>
+							</Else>
+						</If>
 					</div>
 
-					{/* Content Section */}
 					<div className="flex-1 overflow-y-auto">
-						{/* Popular Products Section */}
 						<div className="p-4">
 							<div className="flex items-center space-x-2 mb-4">
 								<div className="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center">
@@ -203,6 +216,6 @@ export function MobileMenu(props: MobileMenuProps) {
 					</div>
 				</div>
 			</DrawerContent>
-		</Drawer>
+		</Drawer >
 	);
 }

@@ -14,6 +14,7 @@ import { cn } from "@/web/lib/utils";
 import { NAVIGATE } from "@/web/web-routes";
 import { useState } from "react";
 import { NavLink, useNavigate } from "react-router";
+import { useLoadingBar } from "react-top-loading-bar";
 
 export function meta() {
 	return [
@@ -30,6 +31,10 @@ export default function AuthPage() {
 		password: "",
 		name: "",
 	});
+	const { start, complete } = useLoadingBar({
+		color: "orange",
+		height: 2,
+	});
 
 	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = e.target;
@@ -45,6 +50,7 @@ export default function AuthPage() {
 		name,
 		image,
 	}: { email: string; password: string; name: string; image?: string }) => {
+		start();
 		await authClient.signUp.email(
 			{
 				email,
@@ -58,6 +64,7 @@ export default function AuthPage() {
 				},
 				onSuccess: (ctx) => {
 					console.log("onSuccess", ctx);
+					complete();
 					navigate(NAVIGATE.DASHBOARD);
 				},
 				onError: (ctx) => {
@@ -68,6 +75,7 @@ export default function AuthPage() {
 	};
 
 	const handleSignIn = async (email: string, password: string) => {
+		start();
 		await authClient.signIn.email(
 			{
 				email,
@@ -79,8 +87,9 @@ export default function AuthPage() {
 					console.log("onRequest", ctx);
 				},
 				onSuccess: (ctx) => {
-					navigate(NAVIGATE.DASHBOARD);
 					console.log("onSuccess", ctx);
+					complete();
+					navigate(NAVIGATE.DASHBOARD);
 				},
 				onError: (ctx) => {
 					alert(ctx.error.message);

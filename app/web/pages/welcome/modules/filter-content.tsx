@@ -11,6 +11,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/web/components/ui/select";
+import { usePublicLayout } from "@/web/context/public-layout.context";
 import { cn } from "@/web/lib/utils";
 import { Filter, X } from "lucide-react";
 import { useState } from "react";
@@ -34,6 +35,7 @@ const FilterContent: React.FC<FilterContentProps> = ({
 	onClearFilters,
 }) => {
 	const [searchParams, setSearchParams] = useSearchParams();
+	const {toggleFilter} = usePublicLayout()
 
 	const [filters, setFilters] = useState<FilterState>({
 		sortBy:
@@ -55,6 +57,7 @@ const FilterContent: React.FC<FilterContentProps> = ({
 	};
 
 	const applyFilters = () => {
+		
 		setFilters(tempFilters);
 
 		// Update URL parameters
@@ -84,6 +87,7 @@ const FilterContent: React.FC<FilterContentProps> = ({
 
 		setSearchParams(params);
 		onApplyFilters?.(tempFilters);
+		toggleFilter();
 	};
 
 	const removeFilter = (filterKey: keyof FilterState) => {
@@ -209,7 +213,6 @@ const FilterContent: React.FC<FilterContentProps> = ({
 				</Button>
 			</div>
 
-			{/* Sort By */}
 			<div className="space-y-3">
 				<Label className="text-sm font-medium">Sort By</Label>
 				<Select
@@ -230,7 +233,6 @@ const FilterContent: React.FC<FilterContentProps> = ({
 				</Select>
 			</div>
 
-			{/* Sort Order */}
 			<div className="space-y-3">
 				<Label className="text-sm font-medium">Sort Order</Label>
 				<RadioGroup
@@ -255,7 +257,6 @@ const FilterContent: React.FC<FilterContentProps> = ({
 				</RadioGroup>
 			</div>
 
-			{/* Stock Status */}
 			<div className="space-y-3">
 				<Label className="text-sm font-medium">Availability</Label>
 				<div className="flex items-center space-x-2">
@@ -272,7 +273,6 @@ const FilterContent: React.FC<FilterContentProps> = ({
 				</div>
 			</div>
 
-			{/* Price Range */}
 			<div className="space-y-3">
 				<Label className="text-sm font-medium">Price Range</Label>
 				<div className="flex items-center gap-2">
@@ -294,7 +294,6 @@ const FilterContent: React.FC<FilterContentProps> = ({
 				</div>
 			</div>
 
-			{/* Active Applied Filters */}
 			{getActiveFiltersCount() > 0 && (
 				<div className="space-y-3 pt-4">
 					<Label className="text-sm font-medium">Active Filters</Label>
@@ -328,7 +327,6 @@ const FilterContent: React.FC<FilterContentProps> = ({
 				</div>
 			)}
 
-			{/* Action Buttons */}
 			<div className="flex flex-col gap-2 pt-4">
 				<Button
 					onClick={applyFilters}
