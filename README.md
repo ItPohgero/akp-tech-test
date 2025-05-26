@@ -1,167 +1,114 @@
-# Panduan Setup Pertama Kali
+# Setup Guide
 
-Ikuti langkah-langkah berikut secara berurutan saat setup project untuk pertama kali.
+Panduan setup project untuk development dengan Docker dan Prisma.
 
-## Prasyarat
+## Prerequisites
 
-Pastikan Anda sudah menginstall:
-- [Docker](https://www.docker.com/get-started)
-- [Docker Compose](https://docs.docker.com/compose/install/)
-- [Bun](https://bun.sh/) (untuk menjalankan script secara lokal)
+- [Docker](https://www.docker.com/get-started) & Docker Compose
+- [Bun](https://bun.sh/)
 
-##  Langkah Demi Langkah Setup
+## Quick Start (Recommended)
 
-### Clone dan Navigate ke Project
 ```bash
+# 1. Clone project
 git clone https://github.com/ItPohgero/akp-tech-test
 cd akp-tech-test
+
+# 2. Install dependencies
+bun install
+
+# 3. Setup everything (one command)
+make start
 ```
 
-### Cara Cepat (Rekomendasi)
-Jalankan di terminal: `make start`
-Ini akan menjalankan semua langkah setup di bawah ini secara otomatis. mulai dari copy env sampai seeder database.
+Perintah `make start` akan:
+- Copy environment variables
+- Start Docker containers
+- Setup database dan seed data
+- Siap untuk development!
 
-### 1. Copy `env.example` ke `.env.development`
+**Akses aplikasi**: http://localhost:5173
+
+## Manual Setup
+
+Jika ingin setup step by step:
+
 ```bash
+# 1. Copy environment file
 cp env.example .env.development
+
+# 2. Start containers
+make dev
+
+# 3. Setup database (di terminal baru)
+make setup
 ```
 
-### 2. Jalankan Docker Containers
-```bash
-bun run docker:dev
-```
-Ini akan:
-- Build dan menjalankan semua Docker containers
-- Setup database
-- Menjalankan aplikasi
-
-**Tunggu hingga semua container siap** (lihat logs yang menunjukkan services yang sedang berjalan)
-
-### 3. Generate Prisma Client
-```bash
-bun run docker:prisma:generate
-```
-Ini membuat Prisma client berdasarkan schema.
-
-### 4. Buat Schema Database
-```bash
-bun run docker:prisma:db:push
-```
-Ini akan:
-- Membuat semua tabel di database
-- Menerapkan Prisma schema ke database
-
-### 5. Seed Database (Opsional)
-```bash
-bun run docker:prisma:db:seed
-```
-Ini mengisi database Anda dengan data awal/contoh.
-
-### 6. Verifikasi Setup
-Buka browser Anda dan navigate ke:
-- **Aplikasi**: http://localhost:5173
-- **Prisma Studio** (GUI Database): Jalankan `bun run docker:prisma:studio` kemudian buka http://localhost:5555
-
-## 🎯 Quick Start (Semua dalam Satu)
-
-Jika Anda ingin menjalankan semuanya sekaligus setelah cloning:
-
-```bash
-# Jalankan containers
-bun run docker:dev
-
-# Di terminal lain, jalankan perintah setup
-bun run docker:prisma:generate && \
-bun run docker:prisma:db:push && \
-bun run docker:prisma:db:seed
-```
-
-## 🛠️ Perintah Umum
+## Common Commands
 
 ### Development
 ```bash
-# Jalankan environment development
-bun run docker:dev
-
-# Lihat logs
-bun run docker:dev:logs
-
-# Hentikan containers
-bun run docker:dev:down
+make start      # First time setup
+make dev        # Start development server
+make dev-stop   # Stop containers
+make dev-logs   # View logs
+make dev-clean  # Clean everything
 ```
 
-### Manajemen Database
+### Database
 ```bash
-# Generate Prisma client
-bun run docker:prisma:generate
-
-# Push perubahan schema ke database
-bun run docker:prisma:db:push
-
-# Reset database ( Ini akan menghapus semua data)
-bun run docker:prisma:db:reset
-
-# Seed database dengan data contoh
-bun run docker:prisma:db:seed
-
-# Buka Prisma Studio (GUI Database)
-bun run docker:prisma:studio
-
-# Jalankan migrasi database
-bun run docker:prisma:migrate
+make prisma-studio    # Open database GUI (port 5555)
+make prisma-seed      # Add sample data
+make prisma-reset     # Reset database (deletes data)
 ```
 
-### Kualitas Kode
+### Code Quality
 ```bash
-# Format dan lint kode
-bun run format
-
-# Type checking
-bun run typecheck
+make format     # Format & lint code
+make typecheck  # Type checking
 ```
 
-## 🧹 Setup Bersih (Jika Ada Masalah)
+## Troubleshooting
 
-Jika Anda mengalami masalah, coba setup bersih:
-
+**Containers not starting?**
 ```bash
-# Hentikan dan hapus semua containers, volumes, dan networks
-bun run docker:dev:clean
-
-# Mulai fresh
-bun run docker:dev
-
-# Kemudian ulangi langkah 3-5 di atas
+make dev-clean  # Clean everything
+make start      # Try again
 ```
 
-## 🐛 Troubleshooting
-
-### Masalah Koneksi Database
-- Pastikan Docker containers berjalan: `docker-compose ps`
-- Cek logs: `bun run docker:dev:logs`
-
-### Masalah Prisma
-- Selalu jalankan `docker:prisma:generate` setelah perubahan schema
-- Gunakan `docker:prisma:db:push` untuk menerapkan perubahan schema
-- Gunakan `docker:prisma:db:reset` untuk mulai fresh (⚠️ menghapus data)
-
-### Peringatan OpenSSL
-Jika Anda melihat peringatan OpenSSL, biasanya aman untuk diabaikan dalam development. Untuk memperbaikinya, update Dockerfile Anda untuk include:
-```dockerfile
-RUN apt-get update -y && apt-get install -y openssl
+**Database issues?**
+```bash
+make prisma-reset  # Reset database
+make setup         # Regenerate & seed
 ```
 
-## 📁 Struktur Project
+**Need fresh start?**
+```bash
+make dev-clean
+rm -rf node_modules
+bun install
+make start
+```
+
+## Project Structure
 
 ```
 ├── prisma/
-│   ├── schema.prisma    # Schema database
-│   └── seed.ts         # Script seeding database
-├── app/                # Kode aplikasi
-├── docker-compose.yml  # Konfigurasi Docker
-└── package.json       # Script dan dependencies
+│   ├── schema.prisma       # Database schema
+│   └── seed.ts             # Sample data
+├── app/                    # Application code
+├── docker-compose.yml      # Docker config
+├── Makefile                # Development commands
+└── package.json            # Scripts & dependencies
 ```
 
-## 🎉 Anda Siap!
+## Help
 
-Setelah menyelesaikan langkah-langkah ini, environment development Anda seharusnya sudah fully setup dan siap untuk development!
+Lihat semua perintah tersedia:
+```bash
+make help
+```
+
+---
+
+**Ready to code!** Aplikasi berjalan di http://localhost:5173

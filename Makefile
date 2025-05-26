@@ -28,81 +28,97 @@ help:
 # Development
 dev:
 	@echo "Starting development server..."
-	bun run docker:dev
+	docker-compose -f docker-compose.yml up --build
 
 start:
 	@echo "First time setup - Copying environment variables..."
 	cp env.example .env.development
 	@echo "First time setup - Starting containers..."
-	bun run docker:dev &
+	docker-compose -f docker-compose.yml up --build -d
 	@echo "Waiting for containers to be ready..."
-	@sleep 10
+	@sleep 15
 	@echo "Setting up database..."
-	$(MAKE) setup
+	@$(MAKE) setup
 	@echo "Development environment ready!"
 	@echo "You can now access the application at http://localhost:5173"
+	@echo "View logs with: make dev-logs"
 
 dev-stop:
 	@echo "Stopping development server..."
-	bun run docker:dev:down
+	docker-compose -f docker-compose.yml down
 
 dev-clean: dev-stop
 	@echo "Cleaning up containers, volumes, and networks..."
-	bun run docker:dev:clean
+	docker-compose -f docker-compose.yml down -v --remove-orphans
 
 dev-logs:
 	@echo "Showing development logs..."
-	bun run docker:dev:logs
+	docker-compose -f docker-compose.yml logs -f
 
 # Database & Prisma
 setup:
 	@echo "Setting up database..."
 	@echo "Generating Prisma client..."
-	bun run docker:prisma:generate
+	docker-compose exec app bunx prisma generate
 	@echo "Pushing schema to database..."
-	bun run docker:prisma:db:push
+	docker-compose exec app bunx prisma db push
 	@echo "Seeding database..."
-	bun run docker:prisma:db:seed
+	docker-compose exec app bun ./prisma/seed.ts
 	@echo "Database setup complete!"
 
 prisma-generate:
 	@echo "Generating Prisma client..."
-	bun run docker:prisma:generate
+	docker-compose exec app bunx prisma generate
 
 prisma-push:
 	@echo "Pushing schema to database..."
-	bun run docker:prisma:db:push
+	docker-compose exec app bunx prisma db push
 
 prisma-seed:
 	@echo "Seeding database..."
-	bun run docker:prisma:db:seed
+	docker-compose exec app bun ./prisma/seed.ts
 
 prisma-reset:
 	@echo "Resetting database (this will delete all data)..."
-	@read -p "Are you sure? (y/N): " confirm && [ "$$confirm" = "y" ] || exit 1
-	bun run docker:prisma:db:reset
+	@read -p "Are you sure? (y/N): " confirm && [ "$confirm" = "y" ] || exit 1
+	docker-compose exec app bunx prisma db reset --force
 
 prisma-studio:
 	@echo "Opening Prisma Studio..."
 	@echo "Access at: http://localhost:5555"
-	bun run docker:prisma:studio
+	docker-compose exec app bunx prisma studio --port 5555 --hostname 0.0.0.0
 
 prisma-migrate:
 	@echo "Running database migrations..."
-	bun run docker:prisma:migrate
+	docker-compose exec app bunx prisma migrate dev
 
 # Code Quality
 format:
 	@echo "Formatting and linting code..."
-	bun run format
+	bunx biome format --write . && bunx biome lint --write . && bunx biome check --write .
 
 typecheck:
 	@echo "Running type checking..."
-	bun run typecheck
+	react-router typegen && tsc
 
 # Quick commands
 quick-setup: dev setup
 	@echo "Quick setup complete!"
+
+start-and-dev:
+	@echo "First time setup - Copying environment variables..."
+	cp env.example .env.development
+	@echo "Starting containers and development server..."
+	@$(MAKE) setup-with-containers
+	@echo "Development environment ready!"
+	@echo "You can now access the application at http://localhost:5173"
+
+setup-with-containers:
+	@echo "Starting containers..."
+	docker-compose -f docker-compose.yml up --build &
+	@echo "Waiting for containers to be ready..."
+	@sleep 10
+	@$(MAKE) setup
 
 restart: dev-stop dev
 	@echo "Restarted development server!"
@@ -118,4 +134,4 @@ health:
 	@docker-compose ps
 	@echo ""
 	@echo "Database connection:"
-	@bun run docker:prisma:db:pull --print | head -5 || echo "Database not accessible"
+	@docker-compose exec app bunx prisma db pull --print | head -5 || echo "Database not accessible"
