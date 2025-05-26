@@ -7,6 +7,7 @@ import {
 	ScrollRestoration,
 	isRouteErrorResponse,
 } from "react-router";
+import { LoadingBarContainer } from "react-top-loading-bar";
 
 import { AlertTriangle, Check, Copy, Home, RefreshCw } from "lucide-react";
 import { Fragment, useState } from "react";
@@ -48,7 +49,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 				`}</style>
 			</head>
 			<body suppressHydrationWarning={true}>
-				{children}
+				<LoadingBarContainer>{children}</LoadingBarContainer>
 				<ScrollRestoration />
 				<Scripts />
 			</body>

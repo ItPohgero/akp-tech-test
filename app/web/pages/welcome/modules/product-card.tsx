@@ -1,8 +1,8 @@
 import { NAVIGATE } from "@/web/web-routes";
+import { motion } from "framer-motion";
 import { Shield, Star } from "lucide-react";
 import { Fragment } from "react";
 import { NavLink } from "react-router";
-
 type Props = {
 	slug: string;
 	imageUrl: string;
@@ -14,7 +14,11 @@ export default function ProductCard(props: Props) {
 	const { imageUrl, name, price, stockQuantity } = props;
 	return (
 		<Fragment>
-			<div className="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow">
+			<motion.div
+				whileHover={{ scale: 1.02 }}
+				whileTap={{ scale: 0.98 }}
+				className="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow"
+			>
 				<div className="relative">
 					<img
 						src={imageUrl || "/api/placeholder/300/300"}
@@ -51,7 +55,7 @@ export default function ProductCard(props: Props) {
 						</div>
 					</div>
 				</div>
-			</div>
+			</motion.div>
 		</Fragment>
 	);
 }

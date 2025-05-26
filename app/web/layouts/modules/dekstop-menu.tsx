@@ -10,11 +10,12 @@ import { Fragment, useEffect, useState } from "react";
 import { useSearchParams } from "react-router";
 
 type DesktopMenu = {
+	allPopularProduct: MenuType;
 	allCategories: MenuType;
 };
 
 export default function DesktopMenu(props: DesktopMenu) {
-	const { allCategories } = props;
+	const { allCategories, allPopularProduct } = props;
 	const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
 	const handleMouseEnter = (menuName: string): void => {
 		setActiveDropdown(menuName);
@@ -24,7 +25,10 @@ export default function DesktopMenu(props: DesktopMenu) {
 	};
 	return (
 		<Fragment>
-			<nav className="hidden lg:block pb-4 relative">
+			<nav
+				className="hidden lg:block pb-4 relative"
+				onMouseLeave={handleMouseLeave}
+			>
 				<div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
 					<motion.div className="flex flex-col lg:flex-row lg:items-center space-y-2 lg:space-y-0 lg:space-x-2">
 						<DropdownMenu
@@ -33,7 +37,13 @@ export default function DesktopMenu(props: DesktopMenu) {
 							footer={allCategories.footer}
 							isOpen={activeDropdown === "All categories"}
 							onMouseEnter={() => handleMouseEnter("All categories")}
-							onMouseLeave={handleMouseLeave}
+						/>
+						<DropdownMenu
+							title={allPopularProduct.title}
+							data={allPopularProduct.data}
+							footer={allPopularProduct.footer}
+							isOpen={activeDropdown === "All popular products"}
+							onMouseEnter={() => handleMouseEnter("All popular products")}
 						/>
 					</motion.div>
 

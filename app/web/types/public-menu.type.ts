@@ -11,6 +11,5 @@ export type MenuType = {
 	footer?: {
 		title: string;
 		description: string;
-		viewAllLink: string;
 	};
 };

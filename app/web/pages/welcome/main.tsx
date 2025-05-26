@@ -9,6 +9,7 @@ import { User } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Else, If, Then } from "react-if";
 import { NavLink, useSearchParams } from "react-router";
+import { useLoadingBar } from "react-top-loading-bar";
 import { FiltersSkeleton } from "./components/skeleton-filters";
 import { ProductCardSkeleton } from "./components/skeleton-product-card";
 import { WelcomeBannerSkeleton } from "./components/skeleton-welcome-banner";
@@ -18,6 +19,10 @@ import Sidebar from "./modules/sidebar";
 export default function WelcomePage() {
 	const { data: user } = authClient.useSession();
 	const [search, setSearch] = useSearchParams();
+	const { start, complete } = useLoadingBar({
+		color: "orange",
+		height: 2,
+	});
 
 	const [data, setData] =
 		useState<Awaited<ReturnType<typeof trpc.products.all.query>>>();
@@ -40,6 +45,7 @@ export default function WelcomePage() {
 				}
 			};
 			try {
+				start();
 				setLoading(true);
 				const result = await trpc.products.all.query({
 					search: search.get("q") || "",
@@ -70,12 +76,13 @@ export default function WelcomePage() {
 				setTimeout(() => {
 					setLoadingSidebar(false);
 					setLoading(false);
+					complete();
 				}, 1000);
 			}
 		};
 
 		fetchProducts();
-	}, [search]);
+	}, [search, start, complete]);
 
 	const handlePageChange = (newPage: number) => {
 		setSearch({ page: newPage.toString() });

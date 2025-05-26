@@ -1,6 +1,5 @@
 import { authClient } from "@/lib/better-auth.client";
 import Logo from "@/web/components/common/logo";
-import type { MenuType } from "@/web/types/public-menu.type";
 import { Globe, Menu, ShoppingCart, User } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Else, If, Then } from "react-if";
@@ -14,6 +13,7 @@ import { NAVIGATE } from "../web-routes";
 import type { Route } from "./+types/public-layout";
 import DesktopMenu, { SearchItem } from "./modules/dekstop-menu";
 import Footer from "./modules/footer";
+import { MenuData } from "./modules/menu-data";
 import { MobileMenu } from "./modules/mobile-menu";
 
 export async function clientLoader(): Promise<{
@@ -46,48 +46,6 @@ export default function PublicLayout({ loaderData }: Route.ComponentProps) {
 			window.removeEventListener("scroll", handleScroll);
 		};
 	}, []);
-
-	const DataAllCategory: MenuType = {
-		title: "All categories",
-		data: [
-			{
-				name: "All categories",
-				description:
-					"Explore a wide range of products across various categories.",
-				subcategories: [
-					{
-						label: "Home Decor",
-						link: "/home-decor",
-					},
-					{
-						label: "Industrial",
-						link: "/industrial",
-					},
-					{
-						label: "Health & Personal Care",
-						link: "/health-personal-care",
-					},
-					{
-						label: "Fashion & Beauty",
-						link: "/fashion-beauty",
-					},
-					{
-						label: "Sports & Entertainment",
-						link: "/sports-entertainment",
-					},
-					{
-						label: "Tools & Home Improvement",
-						link: "/tools-home-improvement",
-					},
-				],
-			},
-		],
-		footer: {
-			title: "Popular Categories",
-			description: "Most searched categories this week",
-			viewAllLink: "/all-categories",
-		},
-	};
 
 	return (
 		<PublicLayoutProvider defaultFilterValue={false} defaultMenuValue={false}>
@@ -132,7 +90,10 @@ export default function PublicLayout({ loaderData }: Route.ComponentProps) {
 							</div>
 						</div>
 					</div>
-					<DesktopMenu allCategories={DataAllCategory} />
+					<DesktopMenu
+						allPopularProduct={MenuData.DataPopularProduct}
+						allCategories={MenuData.DataAllCategory}
+					/>
 				</div>
 			</header>
 
@@ -144,7 +105,10 @@ export default function PublicLayout({ loaderData }: Route.ComponentProps) {
 						</div>
 						<div className="flex items-center justify-between py-2 text-sm space-x-4">
 							<div className="hover:bg-gray-100 rounded">
-								<MobileMenu allCategories={DataAllCategory} />
+								<MobileMenu
+									allPopularProduct={MenuData.DataPopularProduct}
+									allCategories={MenuData.DataAllCategory}
+								/>
 							</div>
 						</div>
 					</div>
