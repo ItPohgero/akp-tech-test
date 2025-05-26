@@ -1,25 +1,16 @@
-import { authClient } from "@/lib/better-auth.client";
-import { Button } from "@/web/components/ui/button";
-import { useNavigate } from "react-router";
+import { ChartAreaInteractive } from "@/web/components/chart-area-interactive";
+import { DataTable } from "@/web/components/data-table";
+import { SectionCards } from "@/web/components/section-cards";
+import { data } from "./data";
 
-export default function WelcomePage() {
-	const navigate = useNavigate();
-	const handleSignOut = async () => {
-		// Sign out logic here
-		await authClient.signOut({
-			fetchOptions: {
-				onSuccess: () => {
-					navigate("/");
-				},
-			},
-		});
-	};
+export default function DashboardPage() {
 	return (
-		<div className="container mx-auto p-4">
-			<p>Dashboard</p>
-			<Button variant="outline" onClick={handleSignOut}>
-				handleSignOut
-			</Button>
+		<div className="flex flex-col gap-4 mt-6">
+			<SectionCards />
+			<div className="px-4 lg:px-6">
+				<ChartAreaInteractive />
+			</div>
+			<DataTable data={data} />
 		</div>
 	);
 }

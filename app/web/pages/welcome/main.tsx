@@ -9,11 +9,11 @@ import { User } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Else, If, Then } from "react-if";
 import { NavLink, useSearchParams } from "react-router";
-import ProductCard from "./modules/product-card";
-import Sidebar from "./modules/sidebar";
 import { FiltersSkeleton } from "./components/skeleton-filters";
 import { ProductCardSkeleton } from "./components/skeleton-product-card";
 import { WelcomeBannerSkeleton } from "./components/skeleton-welcome-banner";
+import ProductCard from "./modules/product-card";
+import Sidebar from "./modules/sidebar";
 
 export default function WelcomePage() {
 	const { data: user } = authClient.useSession();

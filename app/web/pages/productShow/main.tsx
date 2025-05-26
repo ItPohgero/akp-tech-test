@@ -132,8 +132,11 @@ export default function ProductShow() {
 								</If>
 							</div>
 							<div className="lg:w-1/2 p-8">
-								<NavLink className="flex justify-start items-center gap-x-2 mb-4 bg-slate-50 hover:bg-slate-100 rounded-sm w-max px-2" to={NAVIGATE.ROOT}>
-									<ArrowLeft className="w-5 h-5"/>
+								<NavLink
+									className="flex justify-start items-center gap-x-2 mb-4 bg-slate-50 hover:bg-slate-100 rounded-sm w-max px-2"
+									to={NAVIGATE.ROOT}
+								>
+									<ArrowLeft className="w-5 h-5" />
 									<span>Back</span>
 								</NavLink>
 								<div className="mb-4">

@@ -15,23 +15,24 @@ import { BarChartIcon, Box, LayoutDashboardIcon } from "lucide-react";
 
 import { authClient } from "@/lib/better-auth.client";
 import { NavMain } from "@/web/components/nav-main";
+import { NAVIGATE } from "../web-routes";
 import { SidebarLogo } from "./sidebar-logo";
 
 const data = {
 	navMain: [
 		{
 			title: "Dashboard",
-			url: "/dashboard",
+			url: NAVIGATE.DASHBOARD,
 			icon: LayoutDashboardIcon,
 		},
 		{
 			title: "Products",
-			url: "/guard/products",
+			url: NAVIGATE.GUARD.PRODUCTS,
 			icon: Box,
 		},
 		{
 			title: "Analytics",
-			url: "/guard/analytics",
+			url: NAVIGATE.GUARD.ANALYTICS,
 			icon: BarChartIcon,
 		},
 	],
