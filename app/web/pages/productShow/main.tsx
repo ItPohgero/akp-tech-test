@@ -10,7 +10,7 @@ import {
 	useLoaderData,
 	useParams,
 } from "react-router";
-import NotFound from "./modules/notfound";
+import ProductNotFound from "./components/notfound";
 
 interface LoaderData {
 	product: Awaited<ReturnType<typeof trpc.products.show.query>> | null;
@@ -107,7 +107,7 @@ export default function ProductShow() {
 	const { product } = data;
 
 	if (data.notFound || !data.product) {
-		return <NotFound slug={params.slug as string} />;
+		return <ProductNotFound slug={params.slug as string} />;
 	}
 	return (
 		<div className="py-8 container mx-auto">

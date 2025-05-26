@@ -22,19 +22,11 @@ export const ProductsControllers = router({
 				minPrice,
 				search,
 			} = input;
-			console.log({
-				limit,
-				page,
-				sortBy,
-				sortOrder,
-				inStock,
-				maxPrice,
-				minPrice,
-				search,
-			});
+
 			const skip = (page - 1) * limit;
 			const where: Prisma.ProductWhereInput = {};
 
+			// Search conditions
 			if (search) {
 				where.name = {
 					contains: search,
@@ -42,6 +34,7 @@ export const ProductsControllers = router({
 				};
 			}
 
+			// Sorting min and max price conditions
 			if (minPrice !== undefined || maxPrice !== undefined) {
 				where.price = {};
 				if (minPrice !== undefined) {
@@ -52,6 +45,7 @@ export const ProductsControllers = router({
 				}
 			}
 
+			// In-stock conditions
 			if (inStock !== undefined) {
 				if (inStock) {
 					where.stockQuantity = {
@@ -62,11 +56,20 @@ export const ProductsControllers = router({
 				}
 			}
 
+			// Sorting conditions
 			const orderBy: Prisma.ProductOrderByWithRelationInput = {};
 			orderBy[sortBy] = sortOrder;
 
 			const [products, totalCount] = await Promise.all([
 				ctx.prisma.product.findMany({
+					select: {
+						slug: true,
+						imageUrl: true,
+						name: true,
+						price: true,
+						stockQuantity: true,		
+						createdAt: true,				
+					},
 					where,
 					orderBy,
 					skip,
@@ -75,6 +78,7 @@ export const ProductsControllers = router({
 				ctx.prisma.product.count({ where }),
 			]);
 
+			// Calculate pagination details
 			const totalPages = Math.ceil(totalCount / limit);
 			const hasNextPage = page < totalPages;
 			const hasPreviousPage = page > 1;

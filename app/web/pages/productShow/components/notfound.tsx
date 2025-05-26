@@ -2,12 +2,11 @@ import { NAVIGATE } from "@/web/web-routes";
 import { Fragment } from "react";
 import { NavLink } from "react-router";
 
-export default function NotFound({ slug }: { slug: string }) {
+export default function ProductNotFound({ slug }: { slug: string }) {
 	return (
 		<Fragment>
 			<div className="min-h-screen bg-gray-50 py-8">
 				<div className="container mx-auto px-4">
-					{/* Breadcrumb */}
 					<nav className="mb-8">
 						<ol className="flex items-center space-x-2 text-sm text-gray-600">
 							<li>
@@ -28,7 +27,6 @@ export default function NotFound({ slug }: { slug: string }) {
 
 					<div className="max-w-4xl mx-auto text-center">
 						<div className="bg-white rounded-lg shadow-lg p-12">
-							{/* 404 Icon */}
 							<div className="mb-8">
 								<div className="text-6xl text-gray-300 mb-4">📦</div>
 								<h1 className="text-4xl font-bold text-gray-900 mb-4">
@@ -39,7 +37,6 @@ export default function NotFound({ slug }: { slug: string }) {
 								</p>
 							</div>
 
-							{/* Error Details */}
 							<div className="bg-gray-50 rounded-lg p-6 mb-8">
 								<h3 className="font-semibold text-gray-900 mb-2">Details</h3>
 								<p className="text-gray-600">
@@ -57,8 +54,6 @@ export default function NotFound({ slug }: { slug: string }) {
 									Browse All Products
 								</NavLink>
 							</div>
-
-							{/* Suggestions */}
 							<div className="mt-8 pt-8 border-t border-gray-200">
 								<h3 className="font-semibold text-gray-900 mb-4">
 									What you can do:

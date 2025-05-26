@@ -17,9 +17,9 @@ git clone https://github.com/ItPohgero/akp-tech-test
 cd akp-tech-test
 ```
 
-### Cara Cepat Rekomendasi
-Jalankan di terminal: `make dev-first`
-Ini akan menjalankan semua langkah setup di bawah ini secara otomatis.
+### Cara Cepat (Rekomendasi)
+Jalankan di terminal: `make start`
+Ini akan menjalankan semua langkah setup di bawah ini secara otomatis. mulai dari copy env sampai seeder database.
 
 ### 1. Copy `env.example` ke `.env.development`
 ```bash

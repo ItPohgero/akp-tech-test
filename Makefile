@@ -1,10 +1,10 @@
-.PHONY: help dev dev-first dev-stop dev-clean dev-logs setup prisma-generate prisma-push prisma-seed prisma-reset prisma-studio prisma-migrate format typecheck
+.PHONY: help dev start dev-stop dev-clean dev-logs setup prisma-generate prisma-push prisma-seed prisma-reset prisma-studio prisma-migrate format typecheck
 
 help:
 	@echo "Available commands:"
 	@echo ""
 	@echo "🔧 Development:"
-	@echo "  make dev-first    - First time setup (start containers + setup database)"
+	@echo "  make start    - First time setup (start containers + setup database)"
 	@echo "  make dev          - Start development server"
 	@echo "  make dev-stop     - Stop development server"
 	@echo "  make dev-clean    - Clean containers, volumes, and networks"
@@ -23,14 +23,15 @@ help:
 	@echo "  make format       - Format and lint code"
 	@echo "  make typecheck    - Run type checking"
 	@echo ""
-	@echo "💡 Quick start: make dev-first"
+	@echo "💡 Quick start: make start"
 
 # Development
 dev:
 	@echo "Starting development server..."
 	bun run docker:dev
 
-dev-first:
+start:
+	@echo "First time setup - Copying environment variables..."
 	cp env.example .env.development
 	@echo "First time setup - Starting containers..."
 	bun run docker:dev &
@@ -45,7 +46,7 @@ dev-stop:
 	@echo "Stopping development server..."
 	bun run docker:dev:down
 
-dev-clean:
+dev-clean: dev-stop
 	@echo "Cleaning up containers, volumes, and networks..."
 	bun run docker:dev:clean
 
@@ -106,7 +107,8 @@ quick-setup: dev setup
 restart: dev-stop dev
 	@echo "Restarted development server!"
 
-reset-all: dev-clean dev-first
+reset-all: dev-clean start
+	rm -rf node_modules
 	@echo "Complete reset done!"
 
 # Health check

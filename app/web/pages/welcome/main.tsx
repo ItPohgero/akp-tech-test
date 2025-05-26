@@ -11,9 +11,9 @@ import { Else, If, Then } from "react-if";
 import { NavLink, useSearchParams } from "react-router";
 import ProductCard from "./modules/product-card";
 import Sidebar from "./modules/sidebar";
-import { FiltersSkeleton } from "./modules/skeleton-filters";
-import { ProductCardSkeleton } from "./modules/skeleton-product-card";
-import { WelcomeBannerSkeleton } from "./modules/skeleton-welcome-banner";
+import { FiltersSkeleton } from "./components/skeleton-filters";
+import { ProductCardSkeleton } from "./components/skeleton-product-card";
+import { WelcomeBannerSkeleton } from "./components/skeleton-welcome-banner";
 
 export default function WelcomePage() {
 	const { data: user } = authClient.useSession();
@@ -66,7 +66,7 @@ export default function WelcomePage() {
 				setError(err as Error);
 				console.error("Failed to fetch products:", err);
 			} finally {
-				// SImulation of loading
+				// Simulation of loading
 				setTimeout(() => {
 					setLoadingSidebar(false);
 					setLoading(false);
