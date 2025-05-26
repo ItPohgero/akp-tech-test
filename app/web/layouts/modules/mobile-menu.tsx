@@ -17,7 +17,8 @@ import {
 import List from "@/web/components/ui/list";
 import { usePublicLayout } from "@/web/context/public-layout.context";
 import type { MenuType } from "@/web/types/public-menu.type";
-import { NavLink } from "react-router";
+import { NavLink, useNavigate } from "react-router";
+import { NAVIGATE } from "@/web/web-routes";
 
 type MobileMenuProps = {
 	allCategories: MenuType;
@@ -26,6 +27,7 @@ type MobileMenuProps = {
 export function MobileMenu(props: MobileMenuProps) {
 	const { allCategories } = props;
 	const { menu, toggleMenu } = usePublicLayout();
+	const navigate = useNavigate()
 	return (
 		<Drawer direction="right" open={menu} onOpenChange={toggleMenu}>
 			<DrawerTrigger asChild>
@@ -48,18 +50,26 @@ export function MobileMenu(props: MobileMenuProps) {
 							</div>
 						</div>
 						<div className="flex space-x-2">
-							<button
+							<Button
+								onClick={() => {
+									toggleMenu();
+									navigate(NAVIGATE.AUTH);
+								}}
 								type="button"
 								className="flex-1 px-3 py-2 bg-orange-500 text-white text-sm rounded hover:bg-orange-600"
 							>
 								Sign In
-							</button>
-							<button
+							</Button>
+							<Button
+								onClick={() => {
+									toggleMenu();
+									navigate(NAVIGATE.AUTH);
+								}}
 								type="button"
 								className="flex-1 px-3 py-2 border border-gray-300 text-sm rounded hover:bg-gray-50"
 							>
 								Register
-							</button>
+							</Button>
 						</div>
 					</div>
 
