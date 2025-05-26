@@ -66,11 +66,11 @@ export default function WelcomePage() {
 				setError(err as Error);
 				console.error("Failed to fetch products:", err);
 			} finally {
-				// Simulasi untuk loading
+				// SImulation of loading
 				setTimeout(() => {
 					setLoadingSidebar(false);
 					setLoading(false);
-				}, 2000);
+				}, 1000);
 			}
 		};
 
