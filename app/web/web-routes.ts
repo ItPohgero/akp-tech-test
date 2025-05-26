@@ -18,9 +18,9 @@ const PAGES = {
 
 export const NAVIGATE = {
 	ROOT: "/",
-	AUTH: "auth",
-	DASHBOARD: "dashboard",
-	PRODUCT_SHOW: "product/show/:slug",
+	AUTH: "/auth",
+	DASHBOARD: "/dashboard",
+	PRODUCT_SHOW: "/product/show/:slug",
 };
 export default [
 	layout(LAYOUT.PUBLIC, [

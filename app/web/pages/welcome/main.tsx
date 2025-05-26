@@ -1,10 +1,14 @@
+import { authClient } from "@/lib/better-auth.client";
 import trpc from "@/server/pkg/trpc-client";
 import type { SortField } from "@/server/schema/product_list.schema";
+import ErrorPage from "@/web/components/common/error-page";
+import { Alert, AlertDescription, AlertTitle } from "@/web/components/ui/alert";
 import List from "@/web/components/ui/list";
-import { User, X } from "lucide-react";
+import { NAVIGATE } from "@/web/web-routes";
+import { User } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Else, If, Then } from "react-if";
-import { useSearchParams } from "react-router";
+import { NavLink, useSearchParams } from "react-router";
 import ProductCard from "./modules/product-card";
 import Sidebar from "./modules/sidebar";
 import { FiltersSkeleton } from "./modules/skeleton-filters";
@@ -12,11 +16,13 @@ import { ProductCardSkeleton } from "./modules/skeleton-product-card";
 import { WelcomeBannerSkeleton } from "./modules/skeleton-welcome-banner";
 
 export default function WelcomePage() {
+	const { data: user } = authClient.useSession();
 	const [search, setSearch] = useSearchParams();
 
 	const [data, setData] =
 		useState<Awaited<ReturnType<typeof trpc.products.all.query>>>();
 	const [loading, setLoading] = useState<boolean>(true);
+	const [loadingSidebar, setLoadingSidebar] = useState<boolean>(true);
 	const [error, setError] = useState<Error | null>(null);
 
 	useEffect(() => {
@@ -62,6 +68,7 @@ export default function WelcomePage() {
 			} finally {
 				// Simulasi untuk loading
 				setTimeout(() => {
+					setLoadingSidebar(false);
 					setLoading(false);
 				}, 2000);
 			}
@@ -77,7 +84,7 @@ export default function WelcomePage() {
 			behavior: "smooth",
 		});
 	};
-	if (error) return <div>Error: {error.message}</div>;
+	if (error) return <ErrorPage data={error} />;
 
 	return (
 		<div className="min-h-screen ">
@@ -85,7 +92,7 @@ export default function WelcomePage() {
 				<div className="flex flex-col lg:flex-row gap-6 relative">
 					<aside className="w-full lg:w-64 space-y-6">
 						<div className="lg:sticky lg:top-40 lg:max-h-[calc(100vh-3rem)] lg:overflow-y-auto">
-							<If condition={loading}>
+							<If condition={loadingSidebar}>
 								<Then>
 									<FiltersSkeleton />
 								</Then>
@@ -97,26 +104,29 @@ export default function WelcomePage() {
 					</aside>
 
 					<main className="flex-1 min-w-0">
-						<If condition={loading}>
+						<If condition={!user}>
 							<Then>
-								<WelcomeBannerSkeleton />
+								<If condition={loading}>
+									<Then>
+										<WelcomeBannerSkeleton />
+									</Then>
+									<Else>
+										<Alert className="mb-6">
+											<User className="w-4 h-4" />
+											<AlertTitle>Welcome</AlertTitle>
+											<AlertDescription className="text-sm flex items-center gap-1">
+												Sign in to get up to $25!{" "}
+												<NavLink
+													to={NAVIGATE.AUTH}
+													className="text-orange-600 hover:text-orange-800 underline"
+												>
+													Sign In
+												</NavLink>
+											</AlertDescription>
+										</Alert>
+									</Else>
+								</If>
 							</Then>
-							<Else>
-								<div className="bg-gradient-to-r from-orange-100 to-orange-50 p-4 rounded-lg mb-6 flex items-center justify-between">
-									<div className="flex items-center space-x-3">
-										<div className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center">
-											<User className="w-4 h-4 text-white" />
-										</div>
-										<span>Sign in to get up to US$25 welcome perks!</span>
-									</div>
-									<button
-										type="button"
-										className="text-gray-400 hover:text-gray-600"
-									>
-										<X />
-									</button>
-								</div>
-							</Else>
 						</If>
 
 						<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">

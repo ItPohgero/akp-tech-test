@@ -11,11 +11,11 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/web/components/ui/select";
+import { cn } from "@/web/lib/utils";
 import { Filter, X } from "lucide-react";
 import { useState } from "react";
 import { useSearchParams } from "react-router";
 
-// Types based on your Zod schema
 interface FilterState {
 	sortBy: "name" | "price" | "createdAt" | "stockQuantity";
 	sortOrder: "asc" | "desc";
@@ -35,7 +35,6 @@ const FilterContent: React.FC<FilterContentProps> = ({
 }) => {
 	const [searchParams, setSearchParams] = useSearchParams();
 
-	// Filter states
 	const [filters, setFilters] = useState<FilterState>({
 		sortBy:
 			(searchParams.get("sortBy") as FilterState["sortBy"]) || "createdAt",
@@ -46,10 +45,8 @@ const FilterContent: React.FC<FilterContentProps> = ({
 		maxPrice: searchParams.get("maxPrice") || "",
 	});
 
-	// Temporary state for form (before applying)
 	const [tempFilters, setTempFilters] = useState<FilterState>(filters);
 
-	// Handle temporary filter changes
 	const handleTempFilterChange = <K extends keyof FilterState>(
 		key: K,
 		value: FilterState[K],
@@ -57,7 +54,6 @@ const FilterContent: React.FC<FilterContentProps> = ({
 		setTempFilters((prev) => ({ ...prev, [key]: value }));
 	};
 
-	// Apply filters
 	const applyFilters = () => {
 		setFilters(tempFilters);
 
@@ -198,10 +194,16 @@ const FilterContent: React.FC<FilterContentProps> = ({
 					)}
 				</div>
 				<Button
+					disabled={getActiveFiltersCount() === 0}
 					variant="ghost"
 					size="sm"
 					onClick={clearFilters}
-					className="h-8 px-2"
+					className={cn(
+						"h-8 px-2",
+						getActiveFiltersCount()
+							? "text-destructive"
+							: "text-muted-foreground",
+					)}
 				>
 					Clear All
 				</Button>
